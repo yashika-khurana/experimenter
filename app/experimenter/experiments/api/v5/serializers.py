@@ -1039,6 +1039,13 @@ class NimbusReviewSerializer(serializers.ModelSerializer):
 
         return data
 
+    def _validate_feature_enabled(self, data):
+        application = data.get("application")
+        min_version = data.get("firefox_min_version", "")
+        min_unsupported_version = NimbusConstants.FEATURE_ENABLED_MIN_UNSUPPORTED_VERSION[
+            application
+        ]
+
     def _validate_feature_config(self, data):
         feature_config = data.get("feature_config", None)
         warn_feature_schema = data.get("warn_feature_schema", False)
@@ -1058,7 +1065,9 @@ class NimbusReviewSerializer(serializers.ModelSerializer):
 
         schema = json.loads(feature_config.schema)
         error_result = {}
+
         if data["reference_branch"].get("feature_enabled"):
+            feature_enabled_errors = self._validate_feature_enabled()
             errors = self._validate_feature_value_against_schema(
                 schema, data["reference_branch"]["feature_value"]
             )
