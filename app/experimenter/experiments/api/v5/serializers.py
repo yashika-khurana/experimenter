@@ -1022,22 +1022,22 @@ class NimbusReviewSerializer(serializers.ModelSerializer):
         except jsonschema.ValidationError as exc:
             return [exc.message]
 
-    def _validate_feature_configs(self, data):
-        feature_configs = data.get("feature_configs", [])
+    # def _validate_feature_configs(self, data):
+    #     feature_configs = data.get("feature_configs", [])
 
-        for feature_config in feature_configs:
-            if self.instance.application != feature_config.application:
-                raise serializers.ValidationError(
-                    {
-                        "feature_configs": [
-                            f"Feature Config application {feature_config.application} "
-                            f"does not match experiment application "
-                            f"{self.instance.application}."
-                        ]
-                    }
-                )
+    #     for feature_config in feature_configs:
+    #         if self.instance.application != feature_config.application:
+    #             raise serializers.ValidationError(
+    #                 {
+    #                     "feature_configs": [
+    #                         f"Feature Config application {feature_config.application} "
+    #                         f"does not match experiment application "
+    #                         f"{self.instance.application}."
+    #                     ]
+    #                 }
+    #             )
 
-        return data
+    #     return data
 
     def _validate_feature_enabled(self, data):
         application = data.get("application")
@@ -1045,9 +1045,24 @@ class NimbusReviewSerializer(serializers.ModelSerializer):
         min_unsupported_version = NimbusConstants.FEATURE_ENABLED_MIN_UNSUPPORTED_VERSION[
             application
         ]
+        if application == NimbusExperiment.Application.DESKTOP:
+             if NimbusExperiment.Version.parse(
+                min_version
+            ) > NimbusExperiment.Version.parse(min_unsupported_version):
+        
+        #     raise serializers.ValidationError(
+        #             {
+        #                 "firefox_min_version": [NimbusExperiment.ERROR_FIREFOX_VERSION_MIN],
+        #                 "firefox_max_version": [NimbusExperiment.ERROR_FIREFOX_VERSION_MAX],
+        #             }
+        #         )
+        # return data
+            
+
+
 
     def _validate_feature_config(self, data):
-        feature_config = data.get("feature_config", None)
+        # feature_config = data.get("feature_config", None)
         warn_feature_schema = data.get("warn_feature_schema", False)
 
         if not feature_config or not feature_config.schema or not self.instance:
