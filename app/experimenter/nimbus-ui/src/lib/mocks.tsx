@@ -226,18 +226,22 @@ export const MOCK_CONFIG: getConfig_nimbusConfig = {
     {
       label: "Firefox 80",
       value: "FIREFOX_83",
+      dotVersion: "80.!",
     },
     {
       label: "Firefox 16",
       value: "FIREFOX_16",
+      dotVersion: "16.!",
     },
     {
       label: "Firefox 32",
       value: "FIREFOX_32",
+      dotVersion: "32.!",
     },
     {
       label: "Firefox 64",
       value: "FIREFOX_64",
+      dotVersion: "64.!",
     },
   ],
   outcomes: [

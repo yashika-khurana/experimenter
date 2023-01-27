@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { useConfig } from "../hooks";
 import { RedirectCheck } from "../lib/contexts";
 import { getAllExperiments_experiments } from "../types/getAllExperiments";
 import { getExperiment_experimentBySlug } from "../types/getExperiment";
@@ -113,7 +114,17 @@ export const firefoxMinVersionSortSelector: ExperimentSortSelector = (
 
 export const firefoxMaxVersionSortSelector: ExperimentSortSelector = (
   experiment,
-) => experiment.firefoxMaxVersion!;
+) => {
+  return experiment.firefoxMaxVersion!;
+};
+
+// export function dotVersion(firefoxVersion: any) {
+//   return (
+//     firefoxVersion?.find(
+//       (obj: { value: any }) => obj?.value === firefoxVersion!,
+//     )?.dotVersion || ""
+//   );
+// }
 
 export const startDateSortSelector: ExperimentSortSelector = (experiment) =>
   experiment.startDate!;
@@ -153,8 +164,25 @@ export const experimentSortComparator =
     experimentA: getAllExperiments_experiments,
     experimentB: getAllExperiments_experiments,
   ) => {
+    const { firefoxVersions } = useConfig();
     const orderBy = descending ? -1 : 1;
-    const propertyA = selectFromExperiment(experimentA, sortBy);
-    const propertyB = selectFromExperiment(experimentB, sortBy);
-    return orderBy * propertyA.localeCompare(propertyB);
+    let propertyA = selectFromExperiment(experimentA, sortBy);
+    let propertyB = selectFromExperiment(experimentB, sortBy);
+    if (
+      sortBy === firefoxMaxVersionSortSelector ||
+      sortBy === firefoxMinVersionSortSelector
+    ) {
+      propertyA = firefoxVersions?.find((obj) => obj?.value === propertyA)
+        ?.dotVersion!;
+      propertyB = firefoxVersions?.find((obj) => obj?.value === propertyB)
+        ?.dotVersion!;
+      const aValue = parseInt(propertyA?.split(".")[0], 10);
+      const bValue = parseInt(propertyB?.split(".")[0], 10);
+      if (aValue !== bValue) {
+        return orderBy * (aValue - bValue);
+      }
+      return orderBy * (bValue - aValue);
+    } else {
+      return orderBy * propertyA.localeCompare(propertyB);
+    }
   };

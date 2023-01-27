@@ -191,7 +191,7 @@ type NimbusConfigurationType {
   countries: [NimbusCountryType]
   documentationLink: [NimbusLabelValueType]
   allFeatureConfigs: [NimbusFeatureConfigType]
-  firefoxVersions: [NimbusLabelValueType]
+  firefoxVersions: [NimbusFirefoxVersionType]
   hypothesisDefault: String
   locales: [NimbusLocaleType]
   languages: [NimbusLanguageType]
@@ -500,6 +500,12 @@ type NimbusFeatureConfigType {
   setsPrefs: Boolean
   nimbusexperimentSet: [NimbusExperimentType!]!
   nimbusbranchfeaturevalueSet: [NimbusBranchFeatureValueType!]!
+}
+
+type NimbusFirefoxVersionType {
+  label: String
+  value: String
+  dotVersion: String
 }
 
 enum NimbusIsolationGroupApplication {

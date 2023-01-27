@@ -48,6 +48,7 @@ export interface getConfig_nimbusConfig_allFeatureConfigs {
 export interface getConfig_nimbusConfig_firefoxVersions {
   label: string | null;
   value: string | null;
+  dotVersion: string | null;
 }
 
 export interface getConfig_nimbusConfig_outcomes_metrics {

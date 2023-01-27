@@ -1394,6 +1394,7 @@ const renderSubjectWithDefaultValues = (onSubmit = () => {}) =>
           {
             label: NimbusExperimentFirefoxVersionEnum.NO_VERSION,
             value: NimbusExperimentFirefoxVersionEnum.NO_VERSION,
+            dotVersion: "",
           },
         ],
         channels: [

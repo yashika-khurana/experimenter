@@ -39,6 +39,7 @@ export const GET_CONFIG_QUERY = gql`
       firefoxVersions {
         label
         value
+        dotVersion
       }
       outcomes {
         friendlyName

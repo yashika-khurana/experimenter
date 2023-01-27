@@ -77,6 +77,12 @@ class NimbusLabelValueType(graphene.ObjectType):
     value = graphene.String()
 
 
+class NimbusFirefoxVersionType(graphene.ObjectType):
+    label = graphene.String()
+    value = graphene.String()
+    dot_version = graphene.String()
+
+
 class NimbusCountryType(DjangoObjectType):
     id = graphene.Int()
     code = graphene.String()
@@ -263,7 +269,7 @@ class NimbusConfigurationType(graphene.ObjectType):
     countries = graphene.List(NimbusCountryType)
     documentation_link = graphene.List(NimbusLabelValueType)
     all_feature_configs = graphene.List(NimbusFeatureConfigType)
-    firefox_versions = graphene.List(NimbusLabelValueType)
+    firefox_versions = graphene.List(NimbusFirefoxVersionType)
     hypothesis_default = graphene.String()
     locales = graphene.List(NimbusLocaleType)
     languages = graphene.List(NimbusLanguageType)
@@ -321,9 +327,10 @@ class NimbusConfigurationType(graphene.ObjectType):
     def sort_version_choices(choices):
         sorted_versions = list(choices)[::-1]
         sorted_versions = [
-            NimbusLabelValueType(
+            NimbusFirefoxVersionType(
                 label=name.label,
                 value=name.label.replace(" ", "_").upper(),
+                dot_version=name.value,
             )
             for name in sorted_versions
         ]

@@ -25,6 +25,7 @@ import {
 } from "./experiment";
 import {
   mockDirectoryExperiments,
+  mockDirectoryExperimentsQuery,
   mockExperimentQuery,
   mockSingleDirectoryExperiment,
 } from "./mocks";
@@ -135,6 +136,8 @@ describe("selectFromExperiment", () => {
 
 describe("experimentSortComparator", () => {
   const experiments = mockDirectoryExperiments().slice(0, 5);
+
+  const mock = mockDirectoryExperimentsQuery(experiments);
 
   it("sorts by name ascending as expected", () => {
     const sortedExperiments = [...experiments].sort(
